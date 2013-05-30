@@ -2,8 +2,9 @@
 import subprocess
 
 #    mallen = open("Mall.java")
-filen = open("Fail.java")
-cmd = 'javac ' + 'Fail.java' 
+filnamn = "Fail.java"
+filen = open(filnamn)
+cmd = 'javac ' + filnamn 
 proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 out, err = proc.communicate()
 
