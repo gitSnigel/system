@@ -14,6 +14,9 @@ out, err = proc.communicate()
 
 if err != None:
     print  "Dessa är dina compileringsfel: \n", err
+else:
+    print "Du hade inga compileringsfel! \n"
+
 
 #kollar mall mot regexp
 mall = []
