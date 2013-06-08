@@ -13,22 +13,21 @@ proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subproce
 out, err = proc.communicate()
 
 if err != None:
-    print  "Dessa är dina compileringsfel: \n", err
+    print  "Dessa är dina kompileringsfel: \n", err
 else:
-    print "Du hade inga compileringsfel! \n"
-
+    print "Du hade inga kompileringsfel! \n"
 
 #kollar mall mot regexp
 mall = []
 mallstring = ''.join(mallen)
 for i, reg in enumerate(regexp):
-    exists = re.findall(reg.strip(), mallstring)
+    exists = re.findall(reg.decode("string_escape").strip(), mallstring)#kompilerings fel i regexpet
     mall.append(len(exists))
 
 #kollar inl mot regexp och mallens regexp
 filestring = ''.join(filen)
 for i, reg in enumerate(regexp):
-    exists = re.findall(reg.strip(), filestring)
+    exists = re.findall(reg.decode("string_escape").strip(), filestring)
     if exists:
         print reg.strip() + " finns "+ str(len(exists)) + " st"
     if mall[i] != len(exists):
