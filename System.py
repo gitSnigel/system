@@ -1,50 +1,59 @@
 # coding=utf-8
 import subprocess
 import re
-mallen = open("Mall.java").readlines()
-regexp = open("regexp.txt").readlines()
 
-filnamn = "Fail.java"
-filen = open(filnamn).readlines()
+def compileFile(filename):#om alla klasser ska vara lika så måste alla filnamn vara lika också.
+    cmd = 'javac ' + filename
+    proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = proc.communicate()
+    if err != None:
+        print "\nDessa är dina kompileringsfel: \n", err
+    else:
+        print "\nDu hade inga kompileringsfel! \n"
 
-cmd = 'javac ' + filnamn
-
-proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-out, err = proc.communicate()
-
-if err != None:
-    print  "Dessa är dina kompileringsfel: \n", err
-else:
-    print "Du hade inga kompileringsfel! \n"
-
-#kollar mall mot regexp
 mall = []
-mallstring = ''.join(mallen)
-for i, reg in enumerate(regexp):
-    exists = re.findall(reg.decode("string_escape").strip(), mallstring)#kompilerings fel i regexpet
-    mall.append(len(exists))
+def addToMall(exists,reg,i):
+    size = len(exists)
+    if not size:
+        print "Varning: " + reg + " finns inte i mallen"
+    mall.append(size)
 
-#kollar inl mot regexp och mallens regexp
-filestring = ''.join(filen)
-for i, reg in enumerate(regexp):
-    exists = re.findall(reg.decode("string_escape").strip(), filestring)
+def existsInFile(exists,reg,i):
     if exists:
-        print reg.strip() + " finns "+ str(len(exists)) + " st"
+        print reg + " finns", len(exists), "st"
     if mall[i] != len(exists):
-        print reg.strip() + " skiljer sig från mallen"
+        print reg + " skiljer sig från mallen"
+
+def readFileIntoList(filename):
+    return [line.strip() for line in open(filename).readlines()]
+
+regexp = readFileIntoList("regexp.txt")
+def checkAgainstRegexp(filename, method):
+    filestring = ''.join(readFileIntoList(filename))
+    for i, reg in enumerate(regexp):
+        exists = re.findall(reg.decode("string_escape"), filestring)#kompilerings fel i regexpet
+        method(exists,reg,i)
+
+if __name__ == "__main__":
+    import sys
+    mallen = "Mall.java"
+    files = ["Fail.java"]
+    if len(sys.argv) > 2:
+        mallen = sys.argv[1]
+        files = sys.argv[2:]
+    elif len(sys.argv) == 2:
+        mallen = sys.argv[1]
+        from os import listdir
+        from os.path import isfile, join
+        files = [ f for f in listdir(".") if isfile(f) and f.endswith(".java") ]
+        # TODO vilka filer ska vara med?
+
+    #kollar mall mot regexp
+    checkAgainstRegexp(mallen, addToMall)
     
+    for filename in files:
+        compileFile(filename)
+        #kollar inl mot regexp och mallens regexp
+        checkAgainstRegexp(filename, existsInFile)
 
-
-
-loopar = 0
-arrayList = 0
-
-for line in filen:
-    if line.find('while') != -1 or line.find('for') != -1:
-        loopar += 1
-    elif line.find('ArrayList') != -1:
-        arrayList +=1
-           
-print "\nAntal loopar: ", loopar 
-print "\nAntal arraylist: " ,arrayList
 
