@@ -37,7 +37,7 @@ def checkAgainstRegexp(filename, method):
 if __name__ == "__main__":
     import sys
     mallen = "Mall.java"
-    files = ["Fail.java"]
+    files = ["Fail.java"] #blir jobbigt att ändra filen man använder.. kankse borde använda oss av filename på något sätt? 
     if len(sys.argv) > 2:
         mallen = sys.argv[1]
         files = sys.argv[2:]
