@@ -45,7 +45,7 @@ if __name__ == "__main__":
         mallen = sys.argv[1]
         from os import listdir
         from os.path import isfile, join
-        files = [ f for f in listdir(".") if isfile(f) and f.endswith(".java") ]
+        files = [f for f in listdir(".") if isfile(f) and f.endswith(".java") and f != mallen]
         # TODO vilka filer ska vara med?
 
     #kollar mall mot regexp
@@ -55,5 +55,3 @@ if __name__ == "__main__":
         compileFile(filename)
         #kollar inl mot regexp och mallens regexp
         checkAgainstRegexp(filename, existsInFile)
-
-
