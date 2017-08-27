@@ -24,7 +24,7 @@ def loadKeyWords(fileName):
     return keywords
 
 def copyStructure(keywords, f, dir, toDir):
-    fil=open(join(dir, f).read()
+    fil=open(join(dir, f)).read()
     codeList=splitCode(fil, keywords)
     structure=getStructure(codeList, keywords)[1]
     copyFile.copyFile(f, dir,toDir," ".join(structure))

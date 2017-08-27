@@ -12,7 +12,7 @@ def fixFileName(name):#TODO better filenames
     slash=repl(backslash, "/", "slash")
     colon=repl(slash, ":", "colon")
     star=repl(colon, "*", "star")
-    pipe=repl(right, "|", "pipe")
+    pipe=repl(star, "|", "pipe")
     left=repl(pipe, "<", "left")
     right=repl(left, ">", "right")
     return repl(star, "?", "quesionmark")
@@ -21,7 +21,7 @@ def writeDir(path, directory, struct):
     fullDir=join(path, fixFileName(directory))
     if not exists(fullDir):
         os.makedirs(fullDir)
-        f = open(fullDir + "/struct.txt", 'w')
+        f = open(fullDir + "/structure.txt", 'w')
         f.write(struct)
         f.close()
 
